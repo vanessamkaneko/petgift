@@ -6,7 +6,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { DatabaseModule } from '../../infrastructure/db/mongodb/DatabaseModule';
 import { GlobalExceptionFilter } from '../api/global-exception/global.exception';
 import { HealthCheckController } from '../operation/controllers/healthCheck/HealthCheckController';
-import { UserModule } from './UserModule';
+import { AdopterModule } from './AdopterModule';
 
 
 @Module({
@@ -19,7 +19,7 @@ import { UserModule } from './UserModule';
       isGlobal: true,
     }),
     DatabaseModule,
-    UserModule
+    AdopterModule
   ],
   controllers: [HealthCheckController],
   providers: [

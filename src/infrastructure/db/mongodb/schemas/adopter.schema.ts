@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
-@Schema({ collection: "users", timestamps: true })
-export class UserDocument extends Document {
+@Schema({ collection: "adopters", timestamps: true })
+export class AdopterDocument extends Document {
   @Prop({ required: true, type: String })
   name: string;
 
@@ -18,11 +18,8 @@ export class UserDocument extends Document {
   @Prop({ type: String })
   photo: string;
 
-  @Prop({ required: true, type: String, enum: ['adopter', 'protector'] })
-  type: string;
-
   @Prop({ required: true, type: String })
   password: string;
 }
 
-export const UserSchema = SchemaFactory.createForClass(UserDocument);
+export const AdopterSchema = SchemaFactory.createForClass(AdopterDocument);
