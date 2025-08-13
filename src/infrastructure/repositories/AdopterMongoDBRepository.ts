@@ -4,6 +4,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Adopter } from "src/core/adopter/entity/Adopter.entity";
 import { IAdopterRepository } from "./interfaces/IAdopterRepository";
 import { AdopterDocument } from "../db/mongodb/schemas/adopter.schema";
+import { UpdateUserDTO } from "src/core/user/dtos/UpdateUser.dto";
 
 @Injectable()
 export class AdopterMongoDBRepository implements IAdopterRepository {
@@ -40,14 +41,49 @@ export class AdopterMongoDBRepository implements IAdopterRepository {
     return this.toEntity(adopter);
   }
 
+  /**
+   * Atualiza um adotante pelo ID.
+   * @param id - O ID do adotante a ser atualizado.
+   * @param payload - Os dados a serem atualizados.
+   * @returns O adotante atualizado.
+   */
+  async update(id: string, payload: UpdateUserDTO): Promise<Adopter> {
+    const updatedAdopter = await this.adopterModel.findByIdAndUpdate(
+      id,
+      {
+        name: payload.name,
+        email: payload.email,
+        phone: payload.phone,
+        document: payload.document,
+        password: payload.password,
+        photo: payload.photo
+      },
+      { new: true },
+    );
+
+    return this.toEntity(updatedAdopter);
+  }
+
+  /**
+ * Remove um adotante pelo ID.
+ * @param id - O ID do adotante a ser removido.
+ * @returns Uma Promise resolvida quando a operação for concluída.
+ */
+  async delete(id: string): Promise<void> {
+    await this.adopterModel.deleteOne({ _id: id });
+  }
+
   private toEntity(doc: AdopterDocument): Adopter {
     return new Adopter(
-      doc.name,
-      doc.email,
-      doc.phone,
-      doc.document,
-      doc.photo,
-      doc.password,
+      {
+        id: doc._id.toString(),
+        name: doc.name,
+        email: doc.email,
+        phone: doc.phone,
+        document: doc.document,
+        password: doc.password,
+        photo: doc.photo
+      }
     )
   }
 }

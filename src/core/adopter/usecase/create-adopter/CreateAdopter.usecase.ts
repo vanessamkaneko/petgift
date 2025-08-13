@@ -11,8 +11,7 @@ export class CreateAdopterUseCase {
   ) { }
 
   async execute(payload: CreateUserDTO): Promise<Adopter> {
-    const { name, email, phone, document, password, photo } = payload;
-    const newAdopter = new Adopter(name, email, phone, document, password, photo);
+    const newAdopter = new Adopter(payload);
     return this.adopterRepository.create(newAdopter);
   }
 }

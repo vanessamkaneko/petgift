@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from "@nestjs/common";
 import { GetAdopterUseCase } from "src/core/adopter/usecase/get-adopter/GetAdopter.usecase";
 
-@Controller('user')
+@Controller('adopter')
 export class GetAdopterController {
   constructor(
     private readonly getAdopterUseCase: GetAdopterUseCase

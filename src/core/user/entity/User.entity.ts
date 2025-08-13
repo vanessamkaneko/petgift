@@ -8,15 +8,23 @@ export abstract class User {
   readonly password: string;
   readonly photo?: string;
 
-  constructor(
-    name: string,
-    email: string,
-    phone: string,
-    document: string,
-    password: string,
-    photo?: string,
-    id?: string,
-  ) {
+  constructor({
+    id,
+    name,
+    email,
+    phone,
+    document,
+    password,
+    photo,
+  }: {
+    id?: string;
+    name: string;
+    email: string;
+    phone: string;
+    document: string;
+    password: string;
+    photo?: string;
+  }) {
     this.id = id;
     this.name = name;
     this.email = email;
