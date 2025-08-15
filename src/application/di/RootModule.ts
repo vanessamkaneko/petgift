@@ -7,6 +7,7 @@ import { DatabaseModule } from '../../infrastructure/db/mongodb/DatabaseModule';
 import { GlobalExceptionFilter } from '../api/global-exception/global.exception';
 import { HealthCheckController } from '../operation/controllers/healthCheck/HealthCheckController';
 import { AdopterModule } from './AdopterModule';
+import { ProtectorModule } from './ProtectorModule';
 
 
 @Module({
@@ -19,7 +20,8 @@ import { AdopterModule } from './AdopterModule';
       isGlobal: true,
     }),
     DatabaseModule,
-    AdopterModule
+    AdopterModule,
+    ProtectorModule
   ],
   controllers: [HealthCheckController],
   providers: [

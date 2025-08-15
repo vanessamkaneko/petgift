@@ -9,13 +9,13 @@ export class DeleteAdopterUseCase {
     private readonly adopterRepository: IAdopterRepository
   ) { }
 
-  async execute(id: string): Promise<Adopter> {
+  async execute(id: string): Promise<void> {
     const adopter = await this.adopterRepository.findById(id);
 
     if (!adopter) {
       throw new BadRequestException('Adopter not found!');
     }
 
-    return adopter;
+    await this.adopterRepository.delete(id);
   }
 }

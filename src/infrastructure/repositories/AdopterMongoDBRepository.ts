@@ -70,7 +70,11 @@ export class AdopterMongoDBRepository implements IAdopterRepository {
  * @returns Uma Promise resolvida quando a operação for concluída.
  */
   async delete(id: string): Promise<void> {
-    await this.adopterModel.deleteOne({ _id: id });
+    const adopter = await this.adopterModel.findByIdAndDelete(id);
+
+    if (!adopter) {
+      throw new Error(`Adopter not found`);
+    }
   }
 
   private toEntity(doc: AdopterDocument): Adopter {
