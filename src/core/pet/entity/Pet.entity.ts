@@ -1,6 +1,5 @@
-import { Adopter } from "../adopter/entity/Adopter.entity";
-import { Protector } from "../protector/entity/Protector.entity";
-
+import { Adopter } from "src/core/adopter/entity/Adopter.entity";
+import { Protector } from "src/core/protector/entity/Protector.entity";
 
 export class Pet {
   readonly id?: string;
@@ -36,7 +35,7 @@ export class Pet {
     description?: string;
     status: "available" | "adopted";
     photo?: string;
-    protector: Protector;
+    protector?: Protector;
     adopter?: Adopter;
   }) {
     this.id = id;

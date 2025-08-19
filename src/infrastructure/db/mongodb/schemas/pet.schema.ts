@@ -1,19 +1,20 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Types } from "mongoose";
+import { PetSex, PetSpecie, PetStatus } from "src/core/pet/dtos/CreatePet.dto";
 
 @Schema({ collection: "pets", timestamps: true })
 export class PetDocument extends Document {
   @Prop({ required: true, type: String })
   name: string;
 
-  @Prop({ required: true, enum: ["F", "M"] })
-  sex: string;
+  @Prop({ required: true, enum: PetSex })
+  sex: PetSex;
 
   @Prop({ required: true, type: String })
   age: string;
 
-  @Prop({ required: true, enum: ["dog", "cat"] })
-  species: string;
+  @Prop({ required: true, enum: PetSpecie })
+  species: PetSpecie;
 
   @Prop({ type: String })
   description?: string;
@@ -21,8 +22,8 @@ export class PetDocument extends Document {
   @Prop({ type: String }) //depois será required
   photo?: string;
 
-  @Prop({ required: true, type: String, enum: ["available", "adopted"] })
-  status: string;
+  @Prop({ required: true, type: String, enum: PetStatus })
+  status: PetStatus;
 
   // 🔗 Referência ao Protetor
   @Prop({ type: Types.ObjectId, ref: "Protector", required: true })

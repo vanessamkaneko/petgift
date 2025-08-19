@@ -8,6 +8,7 @@ import { GlobalExceptionFilter } from '../api/global-exception/global.exception'
 import { HealthCheckController } from '../operation/controllers/healthCheck/HealthCheckController';
 import { AdopterModule } from './AdopterModule';
 import { ProtectorModule } from './ProtectorModule';
+import { PetPersistenceModule } from 'src/infrastructure/persistence/mongodb/pet/PetPersistenceModule';
 
 
 @Module({
@@ -21,7 +22,8 @@ import { ProtectorModule } from './ProtectorModule';
     }),
     DatabaseModule,
     AdopterModule,
-    ProtectorModule
+    ProtectorModule,
+    PetPersistenceModule
   ],
   controllers: [HealthCheckController],
   providers: [
