@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { IPetRepository } from "./interfaces/IPetRepository";
 import { PetDocument } from "../db/mongodb/schemas/pet.schema";
@@ -21,7 +21,10 @@ export class PetMongoDBRepository implements IPetRepository {
    * @returns O pet criado.
    */
   async create(pet: Pet): Promise<Pet> {
-    const petDocument = new this.petModel(pet); // transformando User do mongo p/ User da aplicação
+    const petDocument = new this.petModel({
+      ...pet,
+      protector: new Types.ObjectId(pet.protectorId), // 👈 converte a string para ObjectId
+    });
     const createdPet = await petDocument.save();
     return this.toEntity(createdPet);
   }
@@ -89,7 +92,8 @@ export class PetMongoDBRepository implements IPetRepository {
         description: doc.description,
         photo: doc.photo,
         status: doc.status,
-        // protetor? adopter?
+        protectorId: doc.protector.toString(),
+        adopterId: doc.adopter ? doc.adopter.toString() : undefined
       }
     )
   }

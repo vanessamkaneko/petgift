@@ -12,8 +12,8 @@ export class Pet {
   readonly photo?: string;
 
   // Relações
-  protector: Protector;   // Quem cadastrou o pet
-  adopter?: Adopter;      // Quem adotou (pode estar vazio)
+  protectorId: string;   // Quem cadastrou o pet
+  adopterId?: string;      // Quem adotou (pode estar vazio)
 
   constructor({
     id,
@@ -24,8 +24,8 @@ export class Pet {
     description,
     status,
     photo,
-    protector,
-    adopter
+    protectorId,
+    adopterId
   }: {
     id?: string;
     name: string;
@@ -35,8 +35,8 @@ export class Pet {
     description?: string;
     status: "available" | "adopted";
     photo?: string;
-    protector?: Protector;
-    adopter?: Adopter;
+    protectorId: string;
+    adopterId?: string;
   }) {
     this.id = id;
     this.name = name;
@@ -46,7 +46,7 @@ export class Pet {
     this.description = description;
     this.status = status;
     this.photo = photo;
-    this.protector = protector;
-    this.adopter = adopter;
+    this.protectorId = protectorId;
+    this.adopterId = adopterId;
   }
 }

@@ -1,5 +1,4 @@
-import { Get, Module } from '@nestjs/common';
-import { ProtectorPersistenceModule } from 'src/infrastructure/persistence/mongodb/protector/ProtectorPersistenceModule';
+import { Module } from '@nestjs/common';
 import { CreateProtectorController } from '../operation/controllers/protector/CreateProtectorController';
 import { CreateProtectorUseCase } from 'src/core/protector/usecase/create-protector/CreateProtector.usecase';
 import { GetProtectorController } from '../operation/controllers/protector/GetProtectorController';
@@ -8,6 +7,7 @@ import { DeleteProtectorController } from '../operation/controllers/protector/De
 import { GetProtectorUseCase } from 'src/core/protector/usecase/get-protector/GetProtector.usecase';
 import { UpdateProtectorUseCase } from 'src/core/protector/usecase/update-protector/UpdateProtector.usecase';
 import { DeleteProtectorUseCase } from 'src/core/protector/usecase/delete-protector/DeleteProtector.usecase';
+import { ProtectorPersistenceModule } from 'src/infrastructure/persistence/mongodb/user/ProtectorPersistenceModule';
 
 
 @Module({

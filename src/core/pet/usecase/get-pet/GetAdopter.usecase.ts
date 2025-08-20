@@ -1,6 +1,5 @@
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
-import { IUserRepository } from "src/infrastructure/repositories/interfaces/IUserRepository";
-import { Adopter } from "../../entity/Adopter.entity";
+import { Adopter } from "src/core/adopter/entity/Adopter.entity";
 import { IAdopterRepository } from "src/infrastructure/repositories/interfaces/IAdopterRepository";
 
 @Injectable()

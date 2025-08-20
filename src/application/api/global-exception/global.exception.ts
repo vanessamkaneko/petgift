@@ -9,18 +9,16 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     console.log(exception);
-    const status = exception.getStatus();
 
     if (exception instanceof BadRequestException) {
       const errorResponse = exception.getResponse();
-      return response.status(status).json(errorResponse)
+      return response.status(400).json(errorResponse)
 
     }
 
-    response
-      .status(status)
+    return response
+      .status(500)
       .json({
-        statusCode: status,
         timestamp: new Date().toISOString(),
         path: request.url,
       });

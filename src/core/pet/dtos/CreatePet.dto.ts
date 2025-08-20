@@ -43,5 +43,13 @@ export class CreatePetDTO {
   @IsEnum(PetStatus)
   @IsNotEmpty()
   status: PetStatus;
+
+  @IsString()
+  @IsNotEmpty()
+  protectorId: string; // ID do protetor que cadastrou o pet
+
+  @IsString()
+  @IsOptional()
+  adopterId?: string; // ID do adotante, se já tiver sido adotado
 }
 

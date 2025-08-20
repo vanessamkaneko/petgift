@@ -9,6 +9,7 @@ import { HealthCheckController } from '../operation/controllers/healthCheck/Heal
 import { AdopterModule } from './AdopterModule';
 import { ProtectorModule } from './ProtectorModule';
 import { PetPersistenceModule } from 'src/infrastructure/persistence/mongodb/pet/PetPersistenceModule';
+import { PetModule } from './PetModule';
 
 
 @Module({
@@ -23,7 +24,7 @@ import { PetPersistenceModule } from 'src/infrastructure/persistence/mongodb/pet
     DatabaseModule,
     AdopterModule,
     ProtectorModule,
-    PetPersistenceModule
+    PetModule
   ],
   controllers: [HealthCheckController],
   providers: [
