@@ -22,6 +22,7 @@ export class CreatePetUseCase {
     }
 
     const newPet = new Pet(payload);
+
     return this.petRepository.create(newPet);
   }
 }

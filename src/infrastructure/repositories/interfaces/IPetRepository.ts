@@ -1,11 +1,10 @@
-import { Adopter } from "src/core/adopter/entity/Adopter.entity";
+import { UpdatePetDTO } from "src/core/pet/dtos/UpdatePet.dto";
 import { Pet } from "src/core/pet/entity/Pet.entity";
-import { UpdateUserDTO } from "src/core/user/dtos/UpdateUser.dto";
 
 export interface IPetRepository {
   create(pet: Pet): Promise<Pet>;
   findById(id: string): Promise<Pet | null>;
-  update(id: string, payload: UpdateUserDTO): Promise<Pet>;
+  update(id: string, payload: UpdatePetDTO): Promise<Pet>;
   delete(id: string): Promise<void>;
 }
 
