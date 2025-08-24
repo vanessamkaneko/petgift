@@ -8,8 +8,8 @@ import { GlobalExceptionFilter } from '../api/global-exception/global.exception'
 import { HealthCheckController } from '../operation/controllers/healthCheck/HealthCheckController';
 import { AdopterModule } from './AdopterModule';
 import { ProtectorModule } from './ProtectorModule';
-import { PetPersistenceModule } from 'src/infrastructure/persistence/mongodb/pet/PetPersistenceModule';
 import { PetModule } from './PetModule';
+import { UserModule } from './UserModule';
 
 
 @Module({
@@ -22,6 +22,7 @@ import { PetModule } from './PetModule';
       isGlobal: true,
     }),
     DatabaseModule,
+    UserModule,
     AdopterModule,
     ProtectorModule,
     PetModule

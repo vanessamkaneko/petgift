@@ -15,6 +15,19 @@ export class AdopterMongoDBRepository implements IAdopterRepository {
     this.adopterModel = model;
   }
 
+  findOne(fields: any): Promise<Adopter> {
+    throw new Error("Method not implemented.");
+  }
+
+  /**
+   * Busca um adotante pelo parâmetro fornecido.
+   * @param param - O parâmetro de busca (pode ser email, nome, etc).
+   * @returns O adotante encontrado ou null se não encontrado.
+   */
+  async find(param: string): Promise<Adopter> {
+    throw new Error("Method not implemented.");
+  }
+
   /**
    * Cria um novo adotante no banco de dados.
    * @param adopter - O adotante a ser criado.

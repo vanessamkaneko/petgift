@@ -8,10 +8,11 @@ import { UpdateAdopterController } from '../operation/controllers/adopter/Update
 import { UpdateAdopterUseCase } from 'src/core/adopter/usecase/update-adopter/UpdateAdopter.usecase';
 import { DeleteAdopterController } from '../operation/controllers/adopter/DeleteAdopterController';
 import { DeleteAdopterUseCase } from 'src/core/adopter/usecase/delete-adopter/DeleteAdopter.usecase';
+import { AuthModule } from 'src/infrastructure/security/AuthModule';
 
 
 @Module({
-  imports: [AdopterPersistenceModule],
+  imports: [AdopterPersistenceModule, AuthModule],
   controllers: [CreateAdopterController, GetAdopterController, UpdateAdopterController, DeleteAdopterController],
   providers: [CreateAdopterUseCase, GetAdopterUseCase, UpdateAdopterUseCase, DeleteAdopterUseCase],
 })

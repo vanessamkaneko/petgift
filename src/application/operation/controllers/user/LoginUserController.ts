@@ -3,7 +3,7 @@ import { LoginUserDTO } from 'src/core/user/dtos/LoginUser.dto';
 import { LoginUserUseCase } from 'src/core/user/usecase/login-user/LoginUser.usecase';
 
 @Controller('auth')
-export class AuthController {
+export class LoginUserController {
   constructor(
     private readonly loginUseCase: LoginUserUseCase
   ) { }

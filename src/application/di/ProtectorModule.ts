@@ -8,10 +8,11 @@ import { GetProtectorUseCase } from 'src/core/protector/usecase/get-protector/Ge
 import { UpdateProtectorUseCase } from 'src/core/protector/usecase/update-protector/UpdateProtector.usecase';
 import { DeleteProtectorUseCase } from 'src/core/protector/usecase/delete-protector/DeleteProtector.usecase';
 import { ProtectorPersistenceModule } from 'src/infrastructure/persistence/mongodb/user/ProtectorPersistenceModule';
+import { AuthModule } from 'src/infrastructure/security/AuthModule';
 
 
 @Module({
-  imports: [ProtectorPersistenceModule],
+  imports: [ProtectorPersistenceModule, AuthModule],
   controllers: [CreateProtectorController, GetProtectorController, UpdateProtectorController, DeleteProtectorController],
   providers: [CreateProtectorUseCase, GetProtectorUseCase, UpdateProtectorUseCase, DeleteProtectorUseCase],
 })

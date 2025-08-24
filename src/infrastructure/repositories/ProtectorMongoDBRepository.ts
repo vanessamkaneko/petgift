@@ -15,6 +15,19 @@ export class ProtectorMongoDBRepository implements IProtectorRepository {
     this.protectorModel = model;
   }
 
+  findOne(fields: any): Promise<Protector> {
+    throw new Error("Method not implemented.");
+  }
+
+  /**
+   * Busca um protetor pelo parâmetro fornecido.
+   * @param param - O parâmetro de busca (pode ser email, nome, etc).
+   * @returns O protetor encontrado ou null se não encontrado.
+   */
+  async find(param: string): Promise<Protector | null> {
+    throw new Error("Method not implemented.");
+  }
+
   /**
    * Cria um novo protetor no banco de dados.
    * @param protector - O protetor a ser criado.
