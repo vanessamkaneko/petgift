@@ -42,7 +42,7 @@ export class CreatePetDTO {
 
   @IsEnum(PetStatus)
   @IsNotEmpty()
-  status: PetStatus;
+  status: PetStatus = PetStatus.AVAILABLE;
 
   @IsString()
   @IsNotEmpty()

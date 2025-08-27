@@ -38,13 +38,13 @@ export class UserMongoDBRepository implements IUserRepository<User> {
     // Primeiro tenta achar em Adopters
     let doc = await this.adopterModel.findOne({ email }).lean();
     if (doc) {
-      return this.toEntityProtetor(doc);
+      return this.toEntityAdopter(doc);
     }
 
     // Se não achou, tenta em Protectors
     doc = await this.protectorModel.findOne({ email }).lean();
     if (doc) {
-      return this.toEntityAdopter(doc);
+      return this.toEntityProtetor(doc);
     }
 
     // Se não encontrou em nenhuma

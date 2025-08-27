@@ -7,9 +7,11 @@ import { CreatePetController } from "../operation/controllers/pet/CreatePetContr
 import { DeletePetController } from "../operation/controllers/pet/DeletePetController";
 import { UpdatePetController } from "../operation/controllers/pet/UpdatePetController";
 import { ProtectorPersistenceModule } from "src/infrastructure/persistence/mongodb/user/ProtectorPersistenceModule";
+import { GetAvailablePetsController } from "../operation/controllers/pet/GetAvailablePetController";
+import { GetAvailablePetsUseCase } from "src/core/pet/usecase/get-available-pets/GetAvailablePets.usecase";
 @Module({
   imports: [PetPersistenceModule, ProtectorPersistenceModule],
-  controllers: [CreatePetController, UpdatePetController, DeletePetController],
-  providers: [CreatePetUseCase, UpdatePetUseCase, DeletePetUseCase],
+  controllers: [CreatePetController, GetAvailablePetsController, UpdatePetController, DeletePetController],
+  providers: [CreatePetUseCase, GetAvailablePetsUseCase, UpdatePetUseCase, DeletePetUseCase],
 })
 export class PetModule { }

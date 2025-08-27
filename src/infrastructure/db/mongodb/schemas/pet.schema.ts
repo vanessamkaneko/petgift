@@ -22,7 +22,7 @@ export class PetDocument extends Document {
   @Prop({ type: String }) //depois será required
   photo?: string;
 
-  @Prop({ required: true, type: String, enum: PetStatus })
+  @Prop({ required: true, type: String, enum: PetStatus, default: PetStatus.AVAILABLE })
   status: PetStatus;
 
   // 🔗 Referência ao Protetor

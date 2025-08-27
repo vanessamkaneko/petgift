@@ -1,4 +1,4 @@
-import { Delete, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { CreateAdopterController } from '../operation/controllers/adopter/CreateAdopterController';
 import { CreateAdopterUseCase } from 'src/core/adopter/usecase/create-adopter/CreateAdopter.usecase';
 import { GetAdopterController } from '../operation/controllers/adopter/GetAdopterController';

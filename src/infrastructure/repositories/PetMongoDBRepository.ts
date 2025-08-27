@@ -5,6 +5,7 @@ import { IPetRepository } from "./interfaces/IPetRepository";
 import { PetDocument } from "../db/mongodb/schemas/pet.schema";
 import { Pet } from "src/core/pet/entity/Pet.entity";
 import { UpdatePetDTO } from "src/core/pet/dtos/UpdatePet.dto";
+import { PetStatus } from "src/core/pet/dtos/CreatePet.dto";
 
 @Injectable()
 export class PetMongoDBRepository implements IPetRepository {
@@ -42,6 +43,16 @@ export class PetMongoDBRepository implements IPetRepository {
     }
 
     return this.toEntity(pet);
+  }
+
+  /**
+   * Busca todos os pets disponíveis.
+   * @returns Uma lista de pets ou null se nenhum for encontrado.
+   */
+
+  async find(): Promise<Pet[] | null> {
+    const pets = this.petModel.find({ status: PetStatus.AVAILABLE }).exec();
+    return (await pets).map((pet) => this.toEntity(pet));
   }
 
   /**
