@@ -66,12 +66,13 @@ export class PetMongoDBRepository implements IPetRepository {
       id,
       {
         name: payload.name,
-        email: payload.sex,
-        phone: payload.age,
-        document: payload.species,
-        password: payload.description,
+        sex: payload.sex,
+        age: payload.age,
+        species: payload.species,
+        description: payload.description,
         photo: payload.photo,
-        status: payload.status
+        status: payload.status,
+        adopterId: payload.adopterId,
       },
       { new: true },
     );

@@ -29,4 +29,8 @@ export class UpdatePetDTO {
   @IsEnum(PetStatus)
   @IsOptional()
   status?: PetStatus;
+
+  @IsString()
+  @IsOptional()
+  adopterId?: string;
 }

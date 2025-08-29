@@ -1,19 +1,19 @@
 import { Adopter } from "src/core/adopter/entity/Adopter.entity";
 import { Protector } from "src/core/protector/entity/Protector.entity";
+import { PetSex, PetSpecie, PetStatus } from "../dtos/CreatePet.dto";
 
 export class Pet {
   readonly id?: string;
   readonly name: string;
-  readonly sex: "F" | "M";
+  readonly sex: PetSex;
   readonly age: string;
-  readonly species: "dog" | "cat";
+  readonly species: PetSpecie;
   readonly description?: string;
-  readonly status: "available" | "adopted";
+  status: PetStatus;
   readonly photo?: string;
 
-  // Relações
-  protectorId: string;   // Quem cadastrou o pet
-  adopterId?: string;      // Quem adotou (pode estar vazio)
+  readonly protectorId: string;
+  adopterId?: string;
 
   constructor({
     id,
@@ -29,11 +29,11 @@ export class Pet {
   }: {
     id?: string;
     name: string;
-    sex: "F" | "M";
+    sex: PetSex;
     age: string;
-    species: "dog" | "cat";
+    species: PetSpecie;
     description?: string;
-    status: "available" | "adopted";
+    status: PetStatus;
     photo?: string;
     protectorId: string;
     adopterId?: string;
