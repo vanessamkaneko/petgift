@@ -17,6 +17,6 @@ export class UpdatePetUseCase {
       throw new BadRequestException('Pet not found!');
     }
 
-    return this.petRepository.update(id, payload);
+    return this.petRepository.updateById(id, payload);
   }
 }

@@ -1,7 +1,8 @@
-import { BadRequestException, Inject, Injectable } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { UpdateUserDTO } from "src/core/user/dtos/UpdateUser.dto";
 import { IProtectorRepository } from "src/infrastructure/repositories/interfaces/IProtectorRepository";
 import { Protector } from "../../entity/Protector.entity";
+import { NotFoundError } from "rxjs";
 
 @Injectable()
 export class UpdateProtectorUseCase {
@@ -14,9 +15,9 @@ export class UpdateProtectorUseCase {
     const protector = await this.protectorRepository.findById(id);
 
     if (!protector) {
-      throw new BadRequestException('Protector not found!');
+      throw new NotFoundException('Protector not found!');
     }
 
-    return this.protectorRepository.update(id, payload);
+    return this.protectorRepository.updateById(id, payload);
   }
 }

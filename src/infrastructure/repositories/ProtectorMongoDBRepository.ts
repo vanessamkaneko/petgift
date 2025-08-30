@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { UpdateUserDTO } from "src/core/user/dtos/UpdateUser.dto";
@@ -61,17 +61,10 @@ export class ProtectorMongoDBRepository implements IProtectorRepository {
    * @param payload - Os dados a serem atualizados.
    * @returns O protetor atualizado.
    */
-  async update(id: string, payload: UpdateUserDTO): Promise<Protector> {
+  async updateById(id: string, payload: UpdateUserDTO): Promise<Protector> {
     const updatedProtector = await this.protectorModel.findByIdAndUpdate(
       id,
-      {
-        name: payload.name,
-        email: payload.email,
-        phone: payload.phone,
-        document: payload.document,
-        password: payload.password,
-        photo: payload.photo
-      },
+      payload,
       { new: true },
     );
 
@@ -88,7 +81,7 @@ export class ProtectorMongoDBRepository implements IProtectorRepository {
     const protector = await this.protectorModel.findByIdAndDelete(id);
 
     if (!protector) {
-      throw new Error(`Protector not found`);
+      throw new NotFoundException(`Protector not found`);
     }
   }
 

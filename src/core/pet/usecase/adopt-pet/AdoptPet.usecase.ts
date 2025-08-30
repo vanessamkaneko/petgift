@@ -22,7 +22,7 @@ export class AdoptPetUseCase {
       throw new ConflictException("Pet is not available for adoption!");
     }
 
-    return this.petRepository.update(id, {
+    return this.petRepository.updateById(id, {
       status: PetStatus.ADOPTED,
       adopterId: adopterId,
     });

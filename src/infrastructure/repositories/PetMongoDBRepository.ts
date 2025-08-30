@@ -61,19 +61,10 @@ export class PetMongoDBRepository implements IPetRepository {
    * @param payload - Os dados a serem atualizados.
    * @returns O pet atualizado.
    */
-  async update(id: string, payload: UpdatePetDTO): Promise<Pet> {
+  async updateById(id: string, payload: UpdatePetDTO): Promise<Pet> {
     const updatedPet = await this.petModel.findByIdAndUpdate(
       id,
-      {
-        name: payload.name,
-        sex: payload.sex,
-        age: payload.age,
-        species: payload.species,
-        description: payload.description,
-        photo: payload.photo,
-        status: payload.status,
-        adopterId: payload.adopterId,
-      },
+      payload,
       { new: true },
     );
 

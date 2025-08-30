@@ -22,15 +22,17 @@ export class UserMongoDBRepository implements IUserRepository<User> {
     @InjectModel(ProtectorDocument.name) private readonly protectorModel: Model<ProtectorDocument>,
   ) { }
 
+  updateById(id: string, payload: UpdateUserDTO): Promise<User> {
+    throw new Error("Method not implemented.");
+  }
+
   create(user: User): Promise<User> {
     throw new Error("Method not implemented.");
   }
   findById(id: string): Promise<User> {
     throw new Error("Method not implemented.");
   }
-  update(id: string, payload: UpdateUserDTO): Promise<User> {
-    throw new Error("Method not implemented.");
-  }
+
   delete(id: string): Promise<void> {
     throw new Error("Method not implemented.");
   }

@@ -20,15 +20,6 @@ export class AdopterMongoDBRepository implements IAdopterRepository {
   }
 
   /**
-   * Busca um adotante pelo parâmetro fornecido.
-   * @param param - O parâmetro de busca (pode ser email, nome, etc).
-   * @returns O adotante encontrado ou null se não encontrado.
-   */
-  async find(param: string): Promise<Adopter> {
-    throw new Error("Method not implemented.");
-  }
-
-  /**
    * Cria um novo adotante no banco de dados.
    * @param adopter - O adotante a ser criado.
    * @returns O adotante criado.
@@ -60,17 +51,10 @@ export class AdopterMongoDBRepository implements IAdopterRepository {
    * @param payload - Os dados a serem atualizados.
    * @returns O adotante atualizado.
    */
-  async update(id: string, payload: UpdateUserDTO): Promise<Adopter> {
+  async updateById(id: string, payload: UpdateUserDTO): Promise<Adopter> {
     const updatedAdopter = await this.adopterModel.findByIdAndUpdate(
       id,
-      {
-        name: payload.name,
-        email: payload.email,
-        phone: payload.phone,
-        document: payload.document,
-        password: payload.password,
-        photo: payload.photo
-      },
+      payload,
       { new: true },
     );
 

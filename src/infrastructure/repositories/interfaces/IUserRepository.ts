@@ -5,7 +5,7 @@ export interface IUserRepository<T extends User> {
   create(user: T): Promise<T>;
   findById(id: string): Promise<T | null>;
   findOne(fields: any): Promise<T | null>;
-  update(id: string, payload: UpdateUserDTO): Promise<T>;
+  updateById(id: string, payload: UpdateUserDTO): Promise<T>;
   delete(id: string): Promise<void>;
 }
 

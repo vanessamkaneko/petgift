@@ -18,6 +18,6 @@ export class UpdateAdopterUseCase {
       throw new BadRequestException('Adopter not found!');
     }
 
-    return this.adopterRepository.update(id, payload);
+    return this.adopterRepository.updateById(id, payload);
   }
 }

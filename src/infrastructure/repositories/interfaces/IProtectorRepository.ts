@@ -5,7 +5,7 @@ import { UpdateUserDTO } from "src/core/user/dtos/UpdateUser.dto";
 export interface IProtectorRepository extends IUserRepository<Protector> {
   create(protector: Protector): Promise<Protector>;
   findById(id: string): Promise<Protector | null>;
-  update(id: string, payload: UpdateUserDTO): Promise<Protector>;
+  updateById(id: string, payload: UpdateUserDTO): Promise<Protector>;
   delete(id: string): Promise<void>;
 }
 
