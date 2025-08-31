@@ -7,6 +7,10 @@ import { Pet } from "src/core/pet/entity/Pet.entity";
 import { UpdatePetDTO } from "src/core/pet/dtos/UpdatePet.dto";
 import { PetStatus } from "src/core/pet/dtos/CreatePet.dto";
 
+export type PetFields = {
+  status?: PetStatus;
+};
+
 @Injectable()
 export class PetMongoDBRepository implements IPetRepository {
   private readonly petModel: Model<PetDocument>;
@@ -50,8 +54,8 @@ export class PetMongoDBRepository implements IPetRepository {
    * @returns Uma lista de pets ou null se nenhum for encontrado.
    */
 
-  async find(): Promise<Pet[] | null> {
-    const pets = this.petModel.find({ status: PetStatus.AVAILABLE }).exec();
+  async find(payload: PetFields): Promise<Pet[] | null> {
+    const pets = this.petModel.find(payload).exec();
     return (await pets).map((pet) => this.toEntity(pet));
   }
 

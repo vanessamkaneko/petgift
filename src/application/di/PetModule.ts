@@ -7,13 +7,13 @@ import { CreatePetController } from "../operation/controllers/pet/CreatePetContr
 import { DeletePetController } from "../operation/controllers/pet/DeletePetController";
 import { UpdatePetController } from "../operation/controllers/pet/UpdatePetController";
 import { ProtectorPersistenceModule } from "src/infrastructure/persistence/mongodb/user/ProtectorPersistenceModule";
-import { GetAvailablePetsController } from "../operation/controllers/pet/GetAvailablePetController";
-import { GetAvailablePetsUseCase } from "src/core/pet/usecase/get-available-pets/GetAvailablePets.usecase";
 import { AdoptPetController } from "../operation/controllers/pet/AdoptPetController";
 import { AdoptPetUseCase } from "src/core/pet/usecase/adopt-pet/AdoptPet.usecase";
+import { GetPetsUseCase } from "src/core/pet/usecase/get-pets/GetPets.usecase";
+import { GetPetsController } from "../operation/controllers/pet/GetPetsController";
 @Module({
   imports: [PetPersistenceModule, ProtectorPersistenceModule],
-  controllers: [CreatePetController, GetAvailablePetsController, UpdatePetController, DeletePetController, AdoptPetController],
-  providers: [CreatePetUseCase, GetAvailablePetsUseCase, UpdatePetUseCase, DeletePetUseCase, AdoptPetUseCase],
+  controllers: [CreatePetController, GetPetsController, UpdatePetController, DeletePetController, AdoptPetController],
+  providers: [CreatePetUseCase, GetPetsUseCase, UpdatePetUseCase, DeletePetUseCase, AdoptPetUseCase],
 })
 export class PetModule { }
