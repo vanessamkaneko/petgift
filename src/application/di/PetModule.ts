@@ -11,9 +11,11 @@ import { AdoptPetController } from "../operation/controllers/pet/AdoptPetControl
 import { AdoptPetUseCase } from "src/core/pet/usecase/adopt-pet/AdoptPet.usecase";
 import { GetPetsUseCase } from "src/core/pet/usecase/get-pets/GetPets.usecase";
 import { GetPetsController } from "../operation/controllers/pet/GetPetsController";
+import { FilterPetsController } from "../operation/controllers/pet/FilterPetsController";
+import { FilterPetsUseCase } from "src/core/pet/usecase/filter-pets/FilterPets.usecase";
 @Module({
   imports: [PetPersistenceModule, ProtectorPersistenceModule],
-  controllers: [CreatePetController, GetPetsController, UpdatePetController, DeletePetController, AdoptPetController],
-  providers: [CreatePetUseCase, GetPetsUseCase, UpdatePetUseCase, DeletePetUseCase, AdoptPetUseCase],
+  controllers: [CreatePetController, GetPetsController, UpdatePetController, DeletePetController, AdoptPetController, FilterPetsController],
+  providers: [CreatePetUseCase, GetPetsUseCase, UpdatePetUseCase, DeletePetUseCase, AdoptPetUseCase, FilterPetsUseCase],
 })
 export class PetModule { }

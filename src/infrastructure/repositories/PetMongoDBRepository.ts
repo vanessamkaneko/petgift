@@ -6,6 +6,7 @@ import { PetDocument } from "../db/mongodb/schemas/pet.schema";
 import { Pet } from "src/core/pet/entity/Pet.entity";
 import { UpdatePetDTO } from "src/core/pet/dtos/UpdatePet.dto";
 import { PetStatus } from "src/core/pet/dtos/CreatePet.dto";
+import { FilterPetsDTO } from "src/core/pet/dtos/FilterPets.dto";
 
 export type PetFields = {
   status?: PetStatus;
@@ -58,6 +59,41 @@ export class PetMongoDBRepository implements IPetRepository {
     const pets = this.petModel.find(payload).exec();
     return (await pets).map((pet) => this.toEntity(pet));
   }
+
+  /** * Filtra os pets com base nos critérios fornecidos.
+   * @param filters - Os filtros a serem aplicados.
+   * @returns Uma lista de pets que correspondem aos filtros.
+   */
+  async filter(filters: FilterPetsDTO): Promise<Pet[]> {
+    console.log("Recebido no filtro:", filters);
+    const query: any = {};
+
+    if (filters.status) {
+      query.status = filters.status;
+    }
+
+    if (filters.species) {
+      query.species = filters.species;
+    }
+
+    if (filters.sex) {
+      query.sex = filters.sex;
+    }
+
+    if (filters.minAge !== undefined || filters.maxAge !== undefined) {
+      query.age = {};
+      if (filters.minAge !== undefined) {
+        query.age.$gte = filters.minAge;
+      }
+      if (filters.maxAge !== undefined) {
+        query.age.$lte = filters.maxAge;
+      }
+    }
+
+    const pets = this.petModel.find(query).exec();
+    return (await pets).map((pet) => this.toEntity(pet));
+  }
+
 
   /**
    * Atualiza um pet pelo ID.
