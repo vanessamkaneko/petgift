@@ -29,6 +29,7 @@ export class UserMongoDBRepository implements IUserRepository<User> {
   create(user: User): Promise<User> {
     throw new Error("Method not implemented.");
   }
+
   findById(id: string): Promise<User> {
     throw new Error("Method not implemented.");
   }
@@ -36,6 +37,7 @@ export class UserMongoDBRepository implements IUserRepository<User> {
   delete(id: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
+
   async findOne(email: string): Promise<User | null> {
     // Primeiro tenta achar em Adopters
     let doc = await this.adopterModel.findOne({ email }).lean();
@@ -62,7 +64,7 @@ export class UserMongoDBRepository implements IUserRepository<User> {
         phone: doc.phone,
         document: doc.document,
         password: doc.password,
-        photo: doc.photo
+        photo: doc.photo,
       }
     )
   }

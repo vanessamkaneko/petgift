@@ -1,5 +1,5 @@
 
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException, BadRequestException, NotFoundException, ConflictException } from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException, BadRequestException, NotFoundException, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 @Catch()
@@ -13,6 +13,11 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (exception instanceof BadRequestException) {
       const errorResponse = exception.getResponse();
       return response.status(400).json(errorResponse)
+    }
+
+    if (exception instanceof UnauthorizedException) {
+      const errorResponse = exception.getResponse();
+      return response.status(401).json(errorResponse)
     }
 
     if (exception instanceof NotFoundException) {

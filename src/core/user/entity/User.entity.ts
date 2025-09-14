@@ -7,6 +7,7 @@ export abstract class User {
   readonly document: string;
   readonly password: string;
   readonly photo?: string;
+  readonly type?: 'adopter' | 'protector';
 
   constructor({
     id,
@@ -16,6 +17,7 @@ export abstract class User {
     document,
     password,
     photo,
+    type
   }: {
     id?: string;
     name: string;
@@ -24,6 +26,7 @@ export abstract class User {
     document: string;
     password: string;
     photo?: string;
+    type?: 'adopter' | 'protector';
   }) {
     this.id = id;
     this.name = name;
@@ -32,5 +35,6 @@ export abstract class User {
     this.document = document;
     this.password = password;
     this.photo = photo;
+    this.type = type;
   }
 }

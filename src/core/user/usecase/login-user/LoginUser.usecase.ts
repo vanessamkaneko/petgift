@@ -13,7 +13,7 @@ export class LoginUserUseCase {
     private readonly authService: AuthService
   ) { }
 
-  async execute(payload: LoginUserDTO): Promise<string> {
+  async execute(payload: LoginUserDTO): Promise<{ user: User; token: string }> {
     const user = await this.userRepository.findOne(payload.email);
 
     if (!user || !(await this.authService.comparePasswords(payload.password, user.password))) {
@@ -22,6 +22,6 @@ export class LoginUserUseCase {
 
     // Gera o JWT
     const token = this.authService.generateToken(user);
-    return token;
+    return { user, token };
   }
 }

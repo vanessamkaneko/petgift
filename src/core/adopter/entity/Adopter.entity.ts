@@ -27,7 +27,8 @@ export class Adopter extends User {
             phone,
             document,
             password,
-            photo
+            photo,
+            type: 'adopter'
         })
     }
 }

@@ -25,7 +25,8 @@ export class Protector extends User {
             phone,
             document,
             password,
-            photo
+            photo,
+            type: 'protector'
         })
     }
 }

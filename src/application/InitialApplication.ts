@@ -1,79 +1,93 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import * as session from 'express-session';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import helmet from 'helmet';
 import { RootModule } from './di/RootModule';
 
 export class InitialApplication {
- private readonly port: number = 3333;
+  private readonly port: number = 3333;
 
- public async run(): Promise<void> {
- const app: NestExpressApplication =
- await NestFactory.create<NestExpressApplication>(RootModule);
+  public async run(): Promise<void> {
+    const app: NestExpressApplication =
+      await NestFactory.create<NestExpressApplication>(RootModule);
 
- app.use(helmet.dnsPrefetchControl());
- app.use(
- helmet.frameguard({
- action: 'deny',
- }),
- );
- app.use(helmet.hidePoweredBy());
- app.use(helmet.hsts());
- app.use(helmet.ieNoOpen());
- app.use(helmet.noSniff());
- app.use(helmet.permittedCrossDomainPolicies());
- app.use(helmet.referrerPolicy());
+    app.use(
+      session({
+        secret: process.env.SESSION_SECRET || 'super-secret-key',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          maxAge: 1000 * 60 * 60, // 1 hora
+        },
+      }),
+    );
 
- app.use(
- helmet.contentSecurityPolicy({
- directives: {
- defaultSrc: ["'self'"],
- imgSrc: ["'self'"],
- manifestSrc: ["'self'"],
- scriptSrc: ["'self'"],
- styleSrc: ["'self'"],
- fontSrc: ["'self'"],
- frameAncestors: ["'self'"],
- blockAllMixedContent: [],
- },
- }),
- );
+    app.use(helmet.dnsPrefetchControl());
+    app.use(
+      helmet.frameguard({
+        action: 'deny',
+      }),
+    );
+    app.use(helmet.hidePoweredBy());
+    app.use(helmet.hsts());
+    app.use(helmet.ieNoOpen());
+    app.use(helmet.noSniff());
+    app.use(helmet.permittedCrossDomainPolicies());
+    app.use(helmet.referrerPolicy());
 
- app.use((req, res, next) => {
- res.setHeader('X-XSS-Protection', '1; mode=block');
- next();
- });
+    app.use(
+      helmet.contentSecurityPolicy({
+        directives: {
+          defaultSrc: ["'self'"],
+          imgSrc: ["'self'"],
+          manifestSrc: ["'self'"],
+          scriptSrc: ["'self'"],
+          styleSrc: ["'self'"],
+          fontSrc: ["'self'"],
+          frameAncestors: ["'self'"],
+          blockAllMixedContent: [],
+        },
+      }),
+    );
 
- const origins = [];
+    app.use((req, res, next) => {
+      res.setHeader('X-XSS-Protection', '1; mode=block');
+      next();
+    });
 
- app.use(function (req, res, next) {
- res.header('Access-Control-Allow-Origin', origins);
- res.header(
- 'Access-Control-Allow-Headers',
- 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
- );
- next();
- });
+    const origins = [];
 
- app.enableCors({
- origin: true,
- methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
- credentials: true,
- });
+    app.use(function (req, res, next) {
+      res.header('Access-Control-Allow-Origin', origins);
+      res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+      );
+      next();
+    });
 
- app.useGlobalPipes(
- new ValidationPipe({
- whitelist: true,
- transform: true,
- forbidNonWhitelisted: true,
- }),
- );
- app.useGlobalFilters();
+    app.enableCors({
+      origin: true,
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+      credentials: true,
+    });
 
- await app.listen(this.port);
- }
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        transform: true,
+        forbidNonWhitelisted: true,
+      }),
+    );
+    app.useGlobalFilters();
 
- public static new(): InitialApplication {
- return new InitialApplication();
- }
+    await app.listen(this.port);
+  }
+
+  public static new(): InitialApplication {
+    return new InitialApplication();
+  }
 }

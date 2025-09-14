@@ -1,4 +1,5 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Req } from '@nestjs/common';
+import { Request } from 'express';
 import { LoginUserDTO } from 'src/core/user/dtos/LoginUser.dto';
 import { LoginUserUseCase } from 'src/core/user/usecase/login-user/LoginUser.usecase';
 
@@ -9,7 +10,18 @@ export class LoginUserController {
   ) { }
 
   @Post('login')
-  async handle(@Body() body: LoginUserDTO) {
-    return await this.loginUseCase.execute(body);
+  async handle(@Req() req: Request, @Body() body: LoginUserDTO) {
+    const { token, user } = await this.loginUseCase.execute(body);
+
+    // Salva user na sessão
+    req.session.user = {
+      email: user.email,
+      type: user.type
+    };
+
+    return {
+      token,
+      user: req.session.user, // opcional, para frontend já ter os dados
+    };
   }
 }

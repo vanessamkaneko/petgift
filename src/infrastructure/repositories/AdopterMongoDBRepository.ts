@@ -25,9 +25,9 @@ export class AdopterMongoDBRepository implements IAdopterRepository {
    * @returns O adotante criado.
    */
   async create(adopter: Adopter): Promise<Adopter> {
-    const adopterDocument = new this.adopterModel(adopter); // transformando User do mongo p/ User da aplicação
+    const adopterDocument = new this.adopterModel(adopter);
     const createdAdopter = await adopterDocument.save();
-    return this.toEntity(createdAdopter);
+    return this.toEntity(createdAdopter); // transformando User do mongo p/ User da aplicação
   }
 
   /**
