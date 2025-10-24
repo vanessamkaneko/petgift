@@ -9,7 +9,7 @@ export function Header() {
       <Toolbar sx={{ display: "flex", justifyContent: "space-between", background: "#D9D9D9" }}>
         {/* Logo */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }}>
-          <img src="/logo.png" alt="Logo" style={{ height: 120 }} />
+          <img src="../logo.png" alt="Logo" style={{ height: 120 }} />
         </Box>
 
         {/* Itens de navegação */}
@@ -30,7 +30,7 @@ export function Header() {
           variant="contained"
           sx={{
             borderRadius: "20px", textTransform: "none",
-            backgroundColor: "#E05D5D", fontWeight: 700, color: "black"
+            backgroundColor: "#E05D5D", fontWeight: 700, color: "black",
           }}
         >
           Entrar | Cadastrar-se

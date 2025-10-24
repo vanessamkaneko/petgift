@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import image from "../assets/about-image.jpg";
+import image from "../../assets/about-image.jpg";
 
 export function AboutSection() {
   return (
