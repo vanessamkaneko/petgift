@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { IPetRepository } from "src/infrastructure/repositories/interfaces/IPetRepository";
 import { Pet } from "../../entity/Pet.entity";
 import { PetFields } from "src/infrastructure/repositories/PetMongoDBRepository";
+import { PetStatus } from "../../dtos/CreatePet.dto";
 
 @Injectable()
 export class GetPetsUseCase {
@@ -10,16 +11,14 @@ export class GetPetsUseCase {
     private readonly petRepository: IPetRepository
   ) { }
 
-  async execute(): Promise<Pet[]> {
+  async execute(userRole?: 'adopter' | 'protector'): Promise<Pet[]> {
     const payload: PetFields = {};
 
-    // Verificar se o usuario é adopter ou protector...
-    // Se for adopter, retornar apenas os pets disponíveis para adoção
-    // if (isAdopter) {
-    //   payload.status = PetStatus.AVAILABLE; // só disponíveis
-    // }
+    // Se o user não for um protector (for adopter ou unauthenticated)
+    if (userRole !== 'protector') {
+      payload.status = PetStatus.AVAILABLE;
+    }
 
-    // Se for protector, retornar todos os pets
     return this.petRepository.find(payload);
   }
 }

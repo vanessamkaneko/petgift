@@ -11,9 +11,11 @@ import { DeleteAdopterUseCase } from 'src/core/adopter/usecase/delete-adopter/De
 import { AuthModule } from 'src/infrastructure/security/AuthModule';
 
 
+import { UploadAdopterPhotoController } from '../operation/controllers/adopter/UploadAdopterPhotoController';
+
 @Module({
   imports: [AdopterPersistenceModule, AuthModule],
-  controllers: [CreateAdopterController, GetAdopterController, UpdateAdopterController, DeleteAdopterController],
+  controllers: [CreateAdopterController, GetAdopterController, UpdateAdopterController, DeleteAdopterController, UploadAdopterPhotoController],
   providers: [CreateAdopterUseCase, GetAdopterUseCase, UpdateAdopterUseCase, DeleteAdopterUseCase],
 })
 export class AdopterModule { }

@@ -8,7 +8,7 @@ import { AuthService } from "src/infrastructure/security/AuthService";
 export class CreateProtectorUseCase {
   constructor(
     @Inject(IProtectorRepository)
-    private readonly ProtectorRepository: IProtectorRepository,
+    private readonly protectorRepository: IProtectorRepository,
 
     private readonly authService: AuthService
   ) { }
@@ -19,6 +19,6 @@ export class CreateProtectorUseCase {
 
     const newProtector = new Protector(payload);
 
-    return this.ProtectorRepository.create(newProtector);
+    return this.protectorRepository.create(newProtector);
   }
 }

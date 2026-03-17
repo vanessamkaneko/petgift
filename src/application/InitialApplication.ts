@@ -4,6 +4,7 @@ import * as session from 'express-session';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import helmet from 'helmet';
 import { RootModule } from './di/RootModule';
+import { join } from 'path';
 
 export class InitialApplication {
   private readonly port: number = 3333;
@@ -24,6 +25,10 @@ export class InitialApplication {
         },
       }),
     );
+
+    app.useStaticAssets(join(__dirname, '..', '..', 'uploads'), {
+      prefix: '/uploads/',
+    });
 
     app.use(helmet.dnsPrefetchControl());
     app.use(

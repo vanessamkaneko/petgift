@@ -11,9 +11,11 @@ import { ProtectorPersistenceModule } from 'src/infrastructure/persistence/mongo
 import { AuthModule } from 'src/infrastructure/security/AuthModule';
 
 
+import { UploadProtectorPhotoController } from '../operation/controllers/protector/UploadProtectorPhotoController';
+
 @Module({
   imports: [ProtectorPersistenceModule, AuthModule],
-  controllers: [CreateProtectorController, GetProtectorController, UpdateProtectorController, DeleteProtectorController],
+  controllers: [CreateProtectorController, GetProtectorController, UpdateProtectorController, DeleteProtectorController, UploadProtectorPhotoController],
   providers: [CreateProtectorUseCase, GetProtectorUseCase, UpdateProtectorUseCase, DeleteProtectorUseCase],
 })
 export class ProtectorModule { }
