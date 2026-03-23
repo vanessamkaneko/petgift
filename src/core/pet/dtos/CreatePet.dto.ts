@@ -45,8 +45,8 @@ export class CreatePetDTO {
   status: PetStatus = PetStatus.AVAILABLE;
 
   @IsString()
-  @IsNotEmpty()
-  protectorId: string; // ID do protetor que cadastrou o pet
+  @IsOptional()
+  protectorId?: string; // ID do protetor que cadastrou o pet
 
   @IsString()
   @IsOptional()

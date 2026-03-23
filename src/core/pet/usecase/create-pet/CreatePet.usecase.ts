@@ -21,7 +21,10 @@ export class CreatePetUseCase {
       throw new BadRequestException("Protector not found");
     }
 
-    const newPet = new Pet(payload);
+    const newPet = new Pet({
+      ...payload,
+      protectorId: payload.protectorId!
+    });
 
     return this.petRepository.create(newPet);
   }

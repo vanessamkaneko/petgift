@@ -15,6 +15,7 @@ export class LoginUserController {
 
     // Salva user na sessão
     req.session.user = {
+      id: user.id!,
       email: user.email,
       type: user.type
     };
