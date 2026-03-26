@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { Header } from '../components/user/Header';
+import { Header } from '../components/home/Header';
 import { RegisterPetForm } from '../components/pet/RegisterPetForm';
 
 function PetRegister() {

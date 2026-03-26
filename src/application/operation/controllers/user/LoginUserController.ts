@@ -14,15 +14,16 @@ export class LoginUserController {
     const { token, user } = await this.loginUseCase.execute(body);
 
     // Salva user na sessão
-    req.session.user = {
+    (req.session as any).user = {
       id: user.id!,
+      name: user.name,
       email: user.email,
       type: user.type
     };
 
     return {
       token,
-      user: req.session.user, // opcional, para frontend já ter os dados
+      user: (req.session as any).user, // opcional, para frontend já ter os dados
     };
   }
 }

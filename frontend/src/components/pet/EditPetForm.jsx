@@ -1,17 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { useParams, useNavigate } from 'react-router-dom';
+import api from '../../services/api';
 
 export function EditPetForm() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [photoName, setPhotoName] = useState('192x192 pixels (.jpg)');
   const [formData, setFormData] = useState({
-    name: 'Lilica',
-    sex: 'Fêmea',
+    name: '',
+    sex: 'F',
     age: 'Adulto',
-    species: 'Canina',
+    species: 'dog',
     photo: null,
   });
 
-  // Example hook effect for later integration 
-  // useEffect(() => { /* fetch pet by ID */ }, []);
+  useEffect(() => {
+    const fetchPet = async () => {
+      try {
+        const response = await api.get(`/pet/${id}`);
+        const data = response.data;
+        setFormData({
+          name: data.name || '',
+          sex: data.sex || 'F',
+          age: data.age || 'Adulto',
+          species: data.species || 'dog',
+          photo: null,
+        });
+        if (data.photo) setPhotoName(data.photo);
+      } catch (error) {
+        console.error('Erro ao buscar o pet:', error);
+      }
+    };
+    if (id) fetchPet();
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,19 +43,43 @@ export function EditPetForm() {
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setFormData((prev) => ({ ...prev, photo: e.target.files[0] }));
+      setPhotoName(e.target.files[0].name);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting edit:", formData);
-    // TODO: integrate with PUT /pet/:id
+    try {
+      const { name, sex, age, species, photo } = formData;
+      await api.put(`/pet/update/${id}`, { name, sex, age, species });
+
+      if (photo) {
+        const fileData = new FormData();
+        fileData.append('file', photo);
+        await api.post(`/pet/${id}/photo`, fileData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+      }
+      alert('Edição salva com sucesso!');
+      navigate('/');
+    } catch (error) {
+      console.error("Erro na edição:", error);
+      alert("Erro ao editar o pet.");
+    }
   };
 
-  const handleDelete = () => {
-    console.log("Delete pet request");
-    // TODO: integrate with DELETE /pet/:id
-  }
+  const handleDelete = async () => {
+    if (window.confirm("Deseja realmente excluir este pet?")) {
+      try {
+        await api.delete(`/pet/${id}`);
+        alert("Pet excluído!");
+        navigate('/');
+      } catch (error) {
+        console.error("Erro ao excluir", error);
+        alert("Erro ao excluir pet.");
+      }
+    }
+  };
 
   const inputStyles = {
     backgroundColor: '#EAEAEA',
@@ -92,8 +138,8 @@ export function EditPetForm() {
               onChange={handleChange}
               sx={inputStyles}
             >
-              <MenuItem value="Fêmea">Fêmea</MenuItem>
-              <MenuItem value="Macho">Macho</MenuItem>
+              <MenuItem value="F">Fêmea</MenuItem>
+              <MenuItem value="M">Macho</MenuItem>
             </Select>
           </Box>
           <Box sx={{ flex: 1 }}>
@@ -122,8 +168,8 @@ export function EditPetForm() {
               onChange={handleChange}
               sx={inputStyles}
             >
-              <MenuItem value="Canina">Canina</MenuItem>
-              <MenuItem value="Felina">Felina</MenuItem>
+              <MenuItem value="dog">Canina</MenuItem>
+              <MenuItem value="cat">Felina</MenuItem>
             </Select>
           </Box>
 

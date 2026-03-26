@@ -63,19 +63,8 @@ export class InitialApplication {
       next();
     });
 
-    const origins = [];
-
-    app.use(function (req, res, next) {
-      res.header('Access-Control-Allow-Origin', origins);
-      res.header(
-        'Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-      );
-      next();
-    });
-
     app.enableCors({
-      origin: true,
+      origin: 'http://localhost:5173', // Permite o React frontend
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
       credentials: true,
     });

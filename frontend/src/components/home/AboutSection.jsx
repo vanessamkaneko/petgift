@@ -4,7 +4,8 @@ import image from "../../assets/about-image.jpg";
 
 export function AboutSection() {
   return (
-    <Box sx={{ py: 8, px: { xs: 2, md: 8, display: "flex" } }}>
+    <Box id="sobre-nos" sx={{ py: 8, px: { xs: 2, md: 8, display: "flex" } }}>
+
       <Box
         sx={{ display: "flex", height: "auto", gap: "4%", justifyContent: "space-between" }}
       >

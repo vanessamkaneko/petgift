@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -12,43 +12,52 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-
-const pets = [
-  {
-    id: 1,
-    name: "Jambo",
-    sex: "Macho",
-    age: "Filhote",
-    species: "Canina",
-    status: "Disponível",
-    image: "https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=400&q=80",
-  },
-  {
-    id: 2,
-    name: "Jujuba",
-    sex: "Fêmea",
-    age: "Filhote",
-    species: "Canina",
-    status: "Disponível",
-    image:
-      "https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&w=400&q=80",
-  },
-  {
-    id: 3,
-    name: "Tutu",
-    sex: "Macho",
-    age: "Adulto",
-    species: "Felina",
-    status: "Disponível",
-    image:
-      "https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=400&q=80",
-  },
-];
-
+import api from "../../services/api";
 
 export function AdoptionSection() {
+  const [pets, setPets] = useState([]);
+  const [filters, setFilters] = useState({ sex: '', age: '', species: '' });
+
+  useEffect(() => {
+    fetchPets();
+  }, []);
+
+  const fetchPets = async () => {
+    try {
+      const response = await api.get('/pets');
+      setPets(response.data);
+    } catch (error) {
+      console.error("Erro ao carregar pets:", error);
+    }
+  };
+
+  const handleFilter = async () => {
+    try {
+      // Remove empty keys to avoid sending empty parameters
+      const params = Object.fromEntries(
+        Object.entries(filters).filter(([_, v]) => v !== '')
+      );
+      
+      const response = await api.get('/pets/filter', { params });
+      setPets(response.data);
+    } catch (error) {
+      console.error("Erro ao filtrar pets:", error);
+    }
+  };
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters(prev => ({ ...prev, [name]: value }));
+  };
+
+  const getImageUrl = (photoPath) => {
+    if (!photoPath) return "https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=400&q=80";
+    if (photoPath.startsWith('http')) return photoPath;
+    return `${api.defaults.baseURL}${photoPath}`;
+  };
+
   return (
-    <Box sx={{ py: 6, px: { xs: 2, md: 8 }, textAlign: "center" }}>
+    <Box id="quero-adotar" sx={{ py: 6, px: { xs: 2, md: 8 }, textAlign: "center" }}>
       {/* Cabeçalho */}
       <Box
         sx={{
@@ -69,6 +78,7 @@ export function AdoptionSection() {
 
       <Button
         variant="contained"
+        onClick={fetchPets}
         sx={{
           backgroundColor: "#f44336",
           color: "black",
@@ -80,44 +90,61 @@ export function AdoptionSection() {
           "&:hover": { backgroundColor: "#d32f2f" },
         }}
       >
-        Ver pets disponíveis
+        Ver todos pets disponíveis
       </Button>
 
       {/* Filtros */}
       <Grid container spacing={2} justifyContent="center" sx={{ mb: 6 }}>
         <Grid item>
           <FormControl sx={{ minWidth: 200 }}>
-            <InputLabel>Ambos os sexos</InputLabel>
-            <Select defaultValue="">
+            <InputLabel>Sexo</InputLabel>
+            <Select 
+              name="sex" 
+              value={filters.sex} 
+              onChange={handleFilterChange} 
+              label="Sexo"
+            >
               <MenuItem value="">Ambos os sexos</MenuItem>
-              <MenuItem value="Macho">Macho</MenuItem>
-              <MenuItem value="Fêmea">Fêmea</MenuItem>
+              <MenuItem value="M">Macho</MenuItem>
+              <MenuItem value="F">Fêmea</MenuItem>
             </Select>
           </FormControl>
         </Grid>
         <Grid item>
           <FormControl sx={{ minWidth: 200 }}>
-            <InputLabel>Todas as idades</InputLabel>
-            <Select defaultValue="">
+            <InputLabel>Idade</InputLabel>
+            <Select 
+              name="age" 
+              value={filters.age} 
+              onChange={handleFilterChange} 
+              label="Idade"
+            >
               <MenuItem value="">Todas as idades</MenuItem>
               <MenuItem value="Filhote">Filhote</MenuItem>
               <MenuItem value="Adulto">Adulto</MenuItem>
+              <MenuItem value="Idoso">Idoso</MenuItem>
             </Select>
           </FormControl>
         </Grid>
         <Grid item>
           <FormControl sx={{ minWidth: 200 }}>
-            <InputLabel>Ambas as espécies</InputLabel>
-            <Select defaultValue="">
+            <InputLabel>Espécie</InputLabel>
+            <Select 
+              name="species" 
+              value={filters.species} 
+              onChange={handleFilterChange} 
+              label="Espécie"
+            >
               <MenuItem value="">Ambas as espécies</MenuItem>
-              <MenuItem value="Canina">Canina</MenuItem>
-              <MenuItem value="Felina">Felina</MenuItem>
+              <MenuItem value="dog">Canina</MenuItem>
+              <MenuItem value="cat">Felina</MenuItem>
             </Select>
           </FormControl>
         </Grid>
         <Grid item>
           <Button
             variant="contained"
+            onClick={handleFilter}
             sx={{
               backgroundColor: "#f44336",
               textTransform: "none",
@@ -147,7 +174,7 @@ export function AdoptionSection() {
       </Typography>
 
       <Grid container spacing={4} justifyContent="center">
-        {pets.map((pet) => (
+        {pets && pets.length > 0 ? pets.map((pet) => (
           <Grid item key={pet.id} xs={12} sm={6} md={4}>
             <Card
               sx={{
@@ -160,7 +187,7 @@ export function AdoptionSection() {
               <CardMedia
                 component="img"
                 height="250"
-                image={pet.image}
+                image={getImageUrl(pet.photo)}
                 alt={pet.name}
                 sx={{ objectFit: "cover" }}
               />
@@ -168,10 +195,10 @@ export function AdoptionSection() {
                 <Typography variant="body1" sx={{ fontWeight: "bold" }}>
                   Nome: {pet.name}
                 </Typography>
-                <Typography>Sexo: {pet.sex}</Typography>
+                <Typography>Sexo: {pet.sex === 'M' ? 'Macho' : pet.sex === 'F' ? 'Fêmea' : pet.sex}</Typography>
                 <Typography>Idade: {pet.age}</Typography>
-                <Typography>Espécie: {pet.species}</Typography>
-                <Typography>Status: {pet.status}</Typography>
+                <Typography>Espécie: {pet.species === 'dog' ? 'Canina' : pet.species === 'cat' ? 'Felina' : pet.species}</Typography>
+                <Typography>Status: {pet.status === 'available' ? "Disponível" : pet.status === 'adopted' ? "Adotado" : pet.status}</Typography>
               </CardContent>
 
               <Button
@@ -189,7 +216,9 @@ export function AdoptionSection() {
               </Button>
             </Card>
           </Grid>
-        ))}
+        )) : (
+          <Typography sx={{ mt: 4, color: 'text.secondary', width: '100%' }}>Nenhum pet encontrado com os filtros selecionados.</Typography>
+        )}
       </Grid>
     </Box>
   );

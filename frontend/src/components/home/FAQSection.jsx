@@ -37,6 +37,7 @@ export function FAQSection() {
 
   return (
     <Box
+      id="faq"
       sx={{
         py: 8,
         px: { xs: 3, md: 12 },

@@ -1,4 +1,4 @@
-import { Header } from '../components/user/Header';
+import { Header } from '../components/home/Header';
 import { UpdateUser } from '../components/user/UpdateUser';
 // import { useFetch } from '../hooks/useFetch';
 

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Box, Button, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import api from '../../services/api';
 
 export function RegisterPetForm() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: 'Lilica',
-    sex: 'Fêmea',
+    name: '',
+    sex: 'F',
     age: 'Adulto',
-    species: 'Canina',
+    species: 'dog',
     photo: null,
   });
 
@@ -21,10 +24,27 @@ export function RegisterPetForm() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting:", formData);
-    // TODO: Axios/Fetch mapping to /pet
+    try {
+      const { name, sex, age, species, photo } = formData;
+      const petResponse = await api.post('/pet', { name, sex, age, species });
+      const newPetId = petResponse.data.id;
+
+      if (photo) {
+        const fileData = new FormData();
+        fileData.append('file', photo);
+        await api.post(`/pet/${newPetId}/photo`, fileData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+      }
+      
+      alert('Pet cadastrado com sucesso!');
+      navigate('/'); 
+    } catch (error) {
+      console.error('Erro ao cadastrar pet:', error);
+      alert('Erro ao cadastrar o pet.');
+    }
   };
 
   const inputStyles = {
@@ -84,8 +104,8 @@ export function RegisterPetForm() {
               onChange={handleChange}
               sx={inputStyles}
             >
-              <MenuItem value="Fêmea">Fêmea</MenuItem>
-              <MenuItem value="Macho">Macho</MenuItem>
+              <MenuItem value="F">Fêmea</MenuItem>
+              <MenuItem value="M">Macho</MenuItem>
             </Select>
           </Box>
           <Box sx={{ flex: 1 }}>
@@ -114,8 +134,8 @@ export function RegisterPetForm() {
               onChange={handleChange}
               sx={inputStyles}
             >
-              <MenuItem value="Canina">Canina</MenuItem>
-              <MenuItem value="Felina">Felina</MenuItem>
+              <MenuItem value="dog">Canina</MenuItem>
+              <MenuItem value="cat">Felina</MenuItem>
             </Select>
           </Box>
 
