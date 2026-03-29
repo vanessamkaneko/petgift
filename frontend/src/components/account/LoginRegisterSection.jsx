@@ -68,7 +68,14 @@ export function LoginRegisterSection() {
       const response = await api.post("/auth/login", loginData);
       
       const userData = response.data.user;
-      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("user", JSON.stringify({
+         id: userData.id,
+         name: userData.name,
+         email: userData.email,
+         type: userData.type,
+         photo: userData.photo
+      }));
+      window.dispatchEvent(new Event("storage"));
       
       alert("Login efetuado com sucesso!");
       navigate("/");

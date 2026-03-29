@@ -12,14 +12,24 @@ export function Header() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser && storedUser !== "undefined") {
-        setUser(JSON.parse(storedUser));
+    const hydrateUser = () => {
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser && storedUser !== "undefined") {
+          setUser(JSON.parse(storedUser));
+        } else {
+          setUser(null);
+        }
+      } catch (e) {
+        console.error("Erro ao ler usuário:", e);
       }
-    } catch (e) {
-      console.error("Erro ao ler usuário:", e);
-    }
+    };
+
+    hydrateUser();
+
+    // Permite que o cache da imagem seja atualizado nos componentes irmãos
+    window.addEventListener("storage", hydrateUser);
+    return () => window.removeEventListener("storage", hydrateUser);
   }, []);
 
   const handleLogout = () => {
@@ -57,7 +67,7 @@ export function Header() {
         {/* Botão de login ou Perfil */}
         {user ? (
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Avatar sx={{ width: 60, height: 60, bgcolor: "#BDBDBD" }} />
+            <Avatar src={user.photo ? `http://localhost:3333${user.photo}` : ""} sx={{ width: 60, height: 60, bgcolor: "#BDBDBD" }} />
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               <Typography variant="body1" sx={{ fontWeight: "bold", color: "#000" }}>
                 Olá, {user?.name ? user.name.split(' ')[0] : 'Usuário'}
