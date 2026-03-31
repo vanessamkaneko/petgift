@@ -17,9 +17,19 @@ import api from "../../services/api";
 export function AdoptionSection() {
   const [pets, setPets] = useState([]);
   const [filters, setFilters] = useState({ sex: '', age: '', species: '' });
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     fetchPets();
+    
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser && storedUser !== "undefined") {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (e) {
+      console.error("Erro ao ler usuário:", e);
+    }
   }, []);
 
   const fetchPets = async () => {
@@ -48,6 +58,18 @@ export function AdoptionSection() {
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleAdopt = async (petId) => {
+    try {
+        await api.post(`/pet/adopt/${petId}`);
+        alert("Sua intenção de adoção foi registrada. Aguarde que em breve entraremos em contato para mais detalhes!");
+        fetchPets(); // Atualiza a lista removendo o pet adotado
+    } catch (error) {
+        console.error(error);
+        const msg = error.response?.data?.message || error.message;
+        alert(`Não foi possível realizar a adoção. Motivo: ${msg}`);
+    }
   };
 
   const getImageUrl = (photoPath) => {
@@ -201,19 +223,22 @@ export function AdoptionSection() {
                 <Typography>Status: {pet.status === 'available' ? "Disponível" : pet.status === 'adopted' ? "Adotado" : pet.status}</Typography>
               </CardContent>
 
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{
-                  backgroundColor: "#f44336",
-                  borderRadius: "20px",
-                  textTransform: "none",
-                  mb: 2,
-                  "&:hover": { backgroundColor: "#d32f2f" },
-                }}
-              >
-                Quero Adotar!
-              </Button>
+              {user?.type === 'adopter' && (
+                <Button
+                  onClick={() => handleAdopt(pet.id)}
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#f44336",
+                    borderRadius: "20px",
+                    textTransform: "none",
+                    mb: 2,
+                    "&:hover": { backgroundColor: "#d32f2f" },
+                  }}
+                >
+                  Quero Adotar!
+                </Button>
+              )}
             </Card>
           </Grid>
         )) : (

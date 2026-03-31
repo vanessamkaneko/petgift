@@ -8,9 +8,13 @@ import {
   MenuItem,
   Paper,
   Avatar,
+  Card,
+  CardMedia,
+  CardContent,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import { EditPetModal } from "../pet/EditPetModal";
 
 export function UpdateUser() {
   const navigate = useNavigate();
@@ -28,6 +32,16 @@ export function UpdateUser() {
   });
 
   const [photoPreview, setPhotoPreview] = useState(null);
+  const [myPets, setMyPets] = useState([]);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [editingPet, setEditingPet] = useState(null);
+
+  const getImageUrl = (photoPath) => {
+    if (!photoPath) return "https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=400&q=80";
+    if (photoPath.startsWith('http')) return photoPath;
+    return `${api.defaults.baseURL}${photoPath}`;
+  };
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -68,12 +82,27 @@ export function UpdateUser() {
         }
       };
 
+      const fetchMyPets = async () => {
+        try {
+           if (roleMapped === "Adotante") {
+              const res = await api.get('/pet/my-adoptions');
+              setMyPets(res.data);
+           } else if (roleMapped === "Protetor") {
+              const res = await api.get('/pet/my-registrations');
+              setMyPets(res.data);
+           }
+        } catch(e) {
+           console.error("Erro ao puxar meus pets", e);
+        }
+      };
+
       fetchProfile();
+      fetchMyPets();
     } catch (e) {
       console.error("Erro ao validar sessao", e);
       navigate("/account");
     }
-  }, [navigate]);
+  }, [navigate, refreshTrigger]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -150,6 +179,7 @@ export function UpdateUser() {
         minHeight: "100vh",
         backgroundColor: "#e0e0e0",
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         py: 8,
@@ -305,6 +335,55 @@ export function UpdateUser() {
           </Button>
         </Box>
       </Paper>
+
+      {(userRole === "Adotante" || userRole === "Protetor") && myPets.length > 0 && (
+        <Paper elevation={4} sx={{ width: "90%", maxWidth: 1000, p: 5, borderRadius: 3, mt: 4 }}>
+           <Typography variant="h5" align="center" sx={{ color: "#f44336", fontWeight: "bold", mb: 4 }}>
+             {userRole === "Adotante" ? "Bichinhos que você adotou / demonstrou interesse ❤️" : "Bichinhos que você cadastrou 🐾"}
+           </Typography>
+           <Grid container spacing={4} justifyContent="center">
+             {myPets.map(pet => (
+                <Grid item key={pet.id} xs={12} sm={6} md={4}>
+                  <Card sx={{ maxWidth: 300, mx: "auto", borderRadius: 3, boxShadow: "0 8px 24px rgba(0,0,0,0.1)", display: 'flex', flexDirection: 'column' }}>
+                     <CardMedia component="img" height="250" image={getImageUrl(pet.photo)} alt={pet.name} sx={{ objectFit: "cover" }} />
+                     <CardContent sx={{ flexGrow: 1 }}>
+                       <Typography variant="body1" sx={{ fontWeight: "bold" }}>Nome: {pet.name}</Typography>
+                       <Typography>Espécie: {pet.species === 'dog' ? 'Canina' : pet.species === 'cat' ? 'Felina' : pet.species}</Typography>
+                       <Typography>Idade: {pet.age}</Typography>
+                       {userRole === "Adotante" ? (
+                         <Typography>Status: Aguardando contato</Typography>
+                       ) : (
+                         <Typography>Status: {pet.status === 'available' ? 'Disponível' : 'Adotado'}</Typography>
+                       )}
+                     </CardContent>
+                     {userRole === "Protetor" && (
+                       <Box sx={{ p: 2, pt: 0 }}>
+                         <Button
+                           fullWidth
+                           variant="outlined"
+                           sx={{ color: '#E05D5D', borderColor: '#E05D5D', '&:hover': { borderColor: '#CA5252', backgroundColor: '#fff5f5' } }}
+                           onClick={() => {
+                              setEditingPet(pet);
+                              setEditModalOpen(true);
+                           }}
+                         >
+                           Editar Pet
+                         </Button>
+                       </Box>
+                     )}
+                  </Card>
+                </Grid>
+             ))}
+           </Grid>
+        </Paper>
+      )}
+
+      <EditPetModal 
+         open={isEditModalOpen}
+         onClose={() => setEditModalOpen(false)}
+         pet={editingPet}
+         onSuccess={() => setRefreshTrigger(prev => prev + 1)}
+      />
     </Box>
   );
 }

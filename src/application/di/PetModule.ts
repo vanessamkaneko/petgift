@@ -18,9 +18,23 @@ import { GetPetUseCase } from "src/core/pet/usecase/get-pet/GetPet.usecase";
 import { AuthModule } from "src/infrastructure/security/AuthModule";
 import { UploadPetPhotoController } from "../operation/controllers/pet/UploadPetPhotoController";
 
+import { GetAdopterPetsController } from "../operation/controllers/pet/GetAdopterPetsController";
+import { GetAdopterPetsUseCase } from "src/core/pet/usecase/get-adopter-pets/GetAdopterPets.usecase";
+
+import { GetProtectorPetsController } from "../operation/controllers/pet/GetProtectorPetsController";
+import { GetProtectorPetsUseCase } from "src/core/pet/usecase/get-protector-pets/GetProtectorPets.usecase";
+
 @Module({
   imports: [PetPersistenceModule, ProtectorPersistenceModule, AuthModule],
-  controllers: [CreatePetController, GetPetController, GetPetsController, UpdatePetController, DeletePetController, AdoptPetController, FilterPetsController, UploadPetPhotoController],
-  providers: [CreatePetUseCase, GetPetUseCase, GetPetsUseCase, UpdatePetUseCase, DeletePetUseCase, AdoptPetUseCase, FilterPetsUseCase],
+  controllers: [
+    GetAdopterPetsController, GetProtectorPetsController, CreatePetController, GetPetController, GetPetsController, 
+    UpdatePetController, DeletePetController, AdoptPetController, 
+    FilterPetsController, UploadPetPhotoController
+  ],
+  providers: [
+    CreatePetUseCase, GetPetUseCase, GetPetsUseCase, 
+    UpdatePetUseCase, DeletePetUseCase, AdoptPetUseCase, 
+    FilterPetsUseCase, GetAdopterPetsUseCase, GetProtectorPetsUseCase
+  ],
 })
 export class PetModule { }

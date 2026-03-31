@@ -10,6 +10,8 @@ import { FilterPetsDTO } from "src/core/pet/dtos/FilterPets.dto";
 
 export type PetFields = {
   status?: PetStatus;
+  adopter?: string;
+  protectorId?: string;
 };
 
 @Injectable()
@@ -56,8 +58,16 @@ export class PetMongoDBRepository implements IPetRepository {
    */
 
   async find(payload: PetFields): Promise<Pet[] | null> {
-    const pets = this.petModel.find(payload).exec();
-    return (await pets).map((pet) => this.toEntity(pet));
+    const query: any = { ...payload };
+    if (query.adopter) {
+      query.adopter = new Types.ObjectId(query.adopter);
+    }
+    if (query.protectorId) {
+      query.protector = new Types.ObjectId(query.protectorId);
+      delete query.protectorId;
+    }
+    const pets = await this.petModel.find(query).exec();
+    return pets.map((pet) => this.toEntity(pet));
   }
 
   /** * Filtra os pets com base nos critérios fornecidos.
@@ -102,9 +112,15 @@ export class PetMongoDBRepository implements IPetRepository {
    * @returns O pet atualizado.
    */
   async updateById(id: string, payload: UpdatePetDTO): Promise<Pet> {
+    const mappedPayload: any = { ...payload };
+    if (mappedPayload.adopterId !== undefined) {
+      mappedPayload.adopter = new Types.ObjectId(mappedPayload.adopterId);
+      delete mappedPayload.adopterId;
+    }
+
     const updatedPet = await this.petModel.findByIdAndUpdate(
       id,
-      payload,
+      mappedPayload,
       { new: true },
     );
 
