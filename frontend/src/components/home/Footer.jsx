@@ -1,7 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography, Link, Stack } from "@mui/material";
 
 export function Footer() {
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    const hydrateUser = () => {
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser && storedUser !== "undefined") {
+          setUserRole(JSON.parse(storedUser).type);
+        } else {
+          setUserRole(null);
+        }
+      } catch (e) {
+        console.error("Erro ao ler usuário:", e);
+      }
+    };
+    hydrateUser();
+    window.addEventListener("storage", hydrateUser);
+    return () => window.removeEventListener("storage", hydrateUser);
+  }, []);
+
   return (
     <Box
       component="footer"
@@ -39,19 +59,25 @@ export function Footer() {
           textAlign: { xs: "center", md: "right" },
         }}
       >
-        <Link href="/account" underline="none" color="text.primary">
-          Entrar
-        </Link>
-        <Link href="/account" underline="none" color="text.primary">
-          Cadastrar-se
-        </Link>
-        <Link href="/sobre-nos" underline="none" color="text.primary">
+        {!userRole && (
+          <>
+            <Link href="/account" underline="none" color="text.primary">
+              Entrar
+            </Link>
+            <Link href="/account" underline="none" color="text.primary">
+              Cadastrar-se
+            </Link>
+          </>
+        )}
+        <Link href="/#sobre-nos" underline="none" color="text.primary">
           Sobre Nós
         </Link>
-        <Link href="/adocao" underline="none" color="text.primary">
-          Quero Adotar
-        </Link>
-        <Link href="/faq" underline="none" color="text.primary">
+        {userRole !== "protector" && (
+          <Link href="/#quero-adotar" underline="none" color="text.primary">
+            Quero Adotar
+          </Link>
+        )}
+        <Link href="/#faq" underline="none" color="text.primary">
           FAQ
         </Link>
       </Stack>

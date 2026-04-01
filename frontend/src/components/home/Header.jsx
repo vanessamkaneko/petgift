@@ -48,17 +48,14 @@ export function Header() {
 
         {/* Itens de navegação */}
         <Box sx={{ display: "flex", gap: 4 }}>
-          {user?.type?.toLowerCase() === 'protector' && (
-            <Button color="inherit" sx={{ fontWeight: 700 }} onClick={() => navigate('/pet/register')}>
-              Cadastrar Pet
-            </Button>
-          )}
           <Button color="inherit" sx={{ fontWeight: 700 }} href="/#sobre-nos">
             Sobre Nós
           </Button>
-          <Button color="inherit" sx={{ fontWeight: 700 }} href="/#quero-adotar">
-            Quero Adotar
-          </Button>
+          {(!user || user?.type?.toLowerCase() !== 'protector') && (
+            <Button color="inherit" sx={{ fontWeight: 700 }} href="/#quero-adotar">
+              Quero Adotar
+            </Button>
+          )}
           <Button color="inherit" sx={{ fontWeight: 700 }} href="/#faq">
             FAQ
           </Button>
@@ -79,6 +76,15 @@ export function Header() {
               >
                 Ver Perfil
               </Typography>
+              {user?.type?.toLowerCase() === 'protector' && (
+                <Typography
+                  variant="body2"
+                  onClick={() => navigate('/pet/register')}
+                  sx={{ color: "#E05D5D", cursor: "pointer", fontWeight: 500, "&:hover": { textDecoration: "underline" } }}
+                >
+                  Cadastrar Pet
+                </Typography>
+              )}
               <Typography
                 variant="body2"
                 onClick={handleLogout}
