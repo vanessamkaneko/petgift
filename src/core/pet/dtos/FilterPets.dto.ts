@@ -1,4 +1,4 @@
-import { IsEnum, IsNumber, IsOptional } from "class-validator";
+import { IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
 import { Type } from "class-transformer";
 import { PetSex, PetSpecie, PetStatus } from "./CreatePet.dto";
 
@@ -15,13 +15,7 @@ export class FilterPetsDTO {
   @IsOptional()
   sex?: PetSex;
 
-  @Type(() => Number)
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  minAge?: number;
-
-  @Type(() => Number)
-  @IsNumber()
-  @IsOptional()
-  maxAge?: number;
+  age?: string;
 }

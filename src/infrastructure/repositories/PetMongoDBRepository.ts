@@ -90,14 +90,8 @@ export class PetMongoDBRepository implements IPetRepository {
       query.sex = filters.sex;
     }
 
-    if (filters.minAge !== undefined || filters.maxAge !== undefined) {
-      query.age = {};
-      if (filters.minAge !== undefined) {
-        query.age.$gte = filters.minAge;
-      }
-      if (filters.maxAge !== undefined) {
-        query.age.$lte = filters.maxAge;
-      }
+    if (filters.age) {
+      query.age = filters.age;
     }
 
     const pets = this.petModel.find(query).exec();
