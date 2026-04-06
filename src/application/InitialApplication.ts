@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as session from 'express-session';
+import MongoStore from 'connect-mongo';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import helmet from 'helmet';
 import { RootModule } from './di/RootModule';
@@ -18,10 +19,14 @@ export class InitialApplication {
         secret: process.env.SESSION_SECRET || 'super-secret-key',
         resave: false,
         saveUninitialized: false,
+        store: MongoStore.create({
+          mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/petgift',
+          collectionName: 'sessions',
+        }),
         cookie: {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
-          maxAge: 1000 * 60 * 60, // 1 hora
+          maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
         },
       }),
     );
@@ -63,8 +68,12 @@ export class InitialApplication {
       next();
     });
 
+    const allowedOrigins = process.env.FRONTEND_URL 
+      ? [process.env.FRONTEND_URL, 'http://localhost:5173'] 
+      : ['http://localhost:5173'];
+
     app.enableCors({
-      origin: 'http://localhost:5173', // Permite o React frontend
+      origin: allowedOrigins,
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
       credentials: true,
     });
