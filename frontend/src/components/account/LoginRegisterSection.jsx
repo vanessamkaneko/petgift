@@ -68,6 +68,8 @@ export function LoginRegisterSection() {
       const response = await api.post("/auth/login", loginData);
       
       const userData = response.data.user;
+      const token = response.data.token;
+      
       localStorage.setItem("user", JSON.stringify({
          id: userData.id,
          name: userData.name,
@@ -75,6 +77,10 @@ export function LoginRegisterSection() {
          type: userData.type,
          photo: userData.photo
       }));
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+      
       window.dispatchEvent(new Event("storage"));
       
       alert("Login efetuado com sucesso!");

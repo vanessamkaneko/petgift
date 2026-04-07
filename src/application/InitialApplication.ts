@@ -31,11 +31,32 @@ export class InitialApplication {
         cookie: {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production', // ou 'auto'
-          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // DANGER: cross-site cookie
           maxAge: 1000 * 60 * 60 * 24 * 7,
         },
       }),
     );
+
+    // Middleware to extract JWT from Authorization header and populate req.session.user
+    app.use((req, res, next) => {
+      if ((!req.session || !req.session.user) && req.headers.authorization) {
+        const authHeader = req.headers.authorization;
+        if (authHeader.startsWith('Bearer ')) {
+          const token = authHeader.split(' ')[1];
+          try {
+            const jwt = require('jsonwebtoken');
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'super-secret-key');
+            if (!req.session) {
+                req.session = {} as any;
+            }
+            req.session.user = decoded;
+          } catch (err) {
+            // Token invalid or expired
+          }
+        }
+      }
+      next();
+    });
 
     app.useStaticAssets(join(__dirname, '..', '..', 'uploads'), {
       prefix: '/uploads/',
