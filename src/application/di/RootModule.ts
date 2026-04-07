@@ -22,7 +22,8 @@ import { join } from 'path';
       envFilePath: ['.env.development'],
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'frontend', 'dist'),
+      rootPath: join(process.cwd(), 'frontend', 'dist'),
+      exclude: ['/api*'],
     }),
     CacheModule.register({
       isGlobal: true,
