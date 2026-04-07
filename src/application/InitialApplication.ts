@@ -16,8 +16,11 @@ export class InitialApplication {
 
     app.setGlobalPrefix('api');
 
+    app.set('trust proxy', 1);
+
     app.use(
       session({
+        name: 'sid', // melhor do que usar o nome padrão
         secret: process.env.SESSION_SECRET || 'super-secret-key',
         resave: false,
         saveUninitialized: false,
@@ -27,8 +30,9 @@ export class InitialApplication {
         }),
         cookie: {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+          secure: process.env.NODE_ENV === 'production', // ou 'auto'
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+          maxAge: 1000 * 60 * 60 * 24 * 7,
         },
       }),
     );
