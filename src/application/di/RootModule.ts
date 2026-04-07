@@ -12,11 +12,17 @@ import { PetModule } from './PetModule';
 import { UserModule } from './UserModule';
 
 
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env.development'],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'frontend', 'dist'),
     }),
     CacheModule.register({
       isGlobal: true,
