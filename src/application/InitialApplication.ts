@@ -14,6 +14,8 @@ export class InitialApplication {
     const app: NestExpressApplication =
       await NestFactory.create<NestExpressApplication>(RootModule);
 
+    app.setGlobalPrefix('api');
+
     app.use(
       session({
         secret: process.env.SESSION_SECRET || 'super-secret-key',
@@ -68,8 +70,8 @@ export class InitialApplication {
       next();
     });
 
-    const allowedOrigins = process.env.FRONTEND_URL 
-      ? [process.env.FRONTEND_URL, 'http://localhost:5173'] 
+    const allowedOrigins = process.env.FRONTEND_URL
+      ? [process.env.FRONTEND_URL, 'http://localhost:5173']
       : ['http://localhost:5173'];
 
     app.enableCors({

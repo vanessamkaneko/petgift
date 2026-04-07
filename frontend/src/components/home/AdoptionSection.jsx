@@ -12,7 +12,7 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import api from "../../services/api";
+import api, { API_BASE_URL } from "../../services/api";
 
 export function AdoptionSection() {
   const [pets, setPets] = useState([]);
@@ -75,7 +75,7 @@ export function AdoptionSection() {
   const getImageUrl = (photoPath) => {
     if (!photoPath) return "/placeholder.svg";
     if (photoPath.startsWith('http')) return photoPath;
-    return `${api.defaults.baseURL}${photoPath}`;
+    return `${API_BASE_URL}${photoPath}`;
   };
 
   return (

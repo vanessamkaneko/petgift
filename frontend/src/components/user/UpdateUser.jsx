@@ -13,7 +13,7 @@ import {
   CardContent,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import api from "../../services/api";
+import api, { API_BASE_URL } from "../../services/api";
 import { EditPetModal } from "../pet/EditPetModal";
 
 export function UpdateUser() {
@@ -40,7 +40,7 @@ export function UpdateUser() {
   const getImageUrl = (photoPath) => {
     if (!photoPath) return "/placeholder.svg";
     if (photoPath.startsWith('http')) return photoPath;
-    return `${api.defaults.baseURL}${photoPath}`;
+    return `${API_BASE_URL}${photoPath}`;
   };
 
   useEffect(() => {
@@ -74,7 +74,7 @@ export function UpdateUser() {
             }));
 
             if (response.data.photo) {
-              setPhotoPreview(`http://localhost:3333${response.data.photo}`);
+              setPhotoPreview(`${API_BASE_URL}${response.data.photo}`);
             }
           }
         } catch (err) {

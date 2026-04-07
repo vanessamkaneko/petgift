@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../services/api";
 
 export function Header() {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ export function Header() {
         {/* Botão de login ou Perfil */}
         {user ? (
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Avatar src={user.photo ? `http://localhost:3333${user.photo}` : ""} sx={{ width: 60, height: 60, bgcolor: "#BDBDBD" }} />
+            <Avatar src={user.photo ? `${API_BASE_URL}${user.photo}` : ""} sx={{ width: 60, height: 60, bgcolor: "#BDBDBD" }} />
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               <Typography variant="body1" sx={{ fontWeight: "bold", color: "#000" }}>
                 Olá, {user?.name ? user.name.split(' ')[0] : 'Usuário'}
