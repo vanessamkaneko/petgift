@@ -16,7 +16,7 @@ export class InitialApplication {
 
     app.setGlobalPrefix('api');
 
-    app.set('trust proxy', 1);
+    app.set('trust proxy', true);
 
     app.use(
       session({
