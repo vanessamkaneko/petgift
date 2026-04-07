@@ -54,11 +54,12 @@ export class InitialApplication {
       helmet.contentSecurityPolicy({
         directives: {
           defaultSrc: ["'self'"],
-          imgSrc: ["'self'"],
+          imgSrc: ["'self'", 'data:', 'https:'],
           manifestSrc: ["'self'"],
           scriptSrc: ["'self'"],
-          styleSrc: ["'self'"],
-          fontSrc: ["'self'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          fontSrc: ["'self'", 'data:', 'https:'],
+          connectSrc: ["'self'", 'https:', 'http://localhost:5173', 'http://localhost:3333'],
           frameAncestors: ["'self'"],
           blockAllMixedContent: [],
         },
